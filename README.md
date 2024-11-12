@@ -87,3 +87,8 @@ Functional vs Non functional requirements
 
 #### Basic Architecture
 ![basic_architecture](./docks/basic_architecture.drawio.png)
+
+
+### 3. Technology & Infrastructure
+#### Application Structure
+![application_structure](./docks/application_structure.drawio.png)
