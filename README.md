@@ -92,3 +92,36 @@ Functional vs Non functional requirements
 ### 3. Technology & Infrastructure
 #### Application Structure
 ![application_structure](./docks/application_structure.drawio.png)
+
+
+#### Database expectations
+##### User
+* Create Account (Buyer / Seller)
+* Contact Details
+* Address
+* Payment Methods
+* Shopping Cart
+* Cart Items
+
+##### Transaction
+* Order
+* Transactions
+* Shipping
+
+##### Products & Deals
+* Order
+* Transactions
+* Shipping
+
+##### Chat
+* Live Chat
+* Participants
+
+![db_expectations](./docks/db_expectations.drawio.png)
+
+#### Db entities
+![db_entities](./docks/db_entities.png)
+
+
+#### Service endpoints
+![service_endpoints](./docks/service_endpoints.png)
