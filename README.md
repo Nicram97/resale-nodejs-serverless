@@ -94,6 +94,15 @@ Functional vs Non functional requirements
 ![application_structure](./docks/application_structure.drawio.png)
 
 
+#### Possible Techstack
+![possible_techstack](./docks/possible_techstack.png)
+
+From Possible techstacks Serverless + AWS CDK has been picked.
+It will allow seamless deployment and instant scaling when needed. Also it can very easly switch between languages when used only support in AWS is required. We can focus purely on application logic mostly and some basic configuration.
+
+![serverless_framework_explanation](./docks/serverless_framework_explanation.png)
+
+
 #### Database expectations
 ##### User
 * Create Account (Buyer / Seller)
