@@ -9,6 +9,9 @@ Techstack:
 - PostgreSQL
 - Amazon S3
 
+### TLDR
+* How To start: run `npm run dev`
+
 ## Project Design
 
 1. Product requirements
