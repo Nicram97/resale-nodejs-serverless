@@ -28,7 +28,7 @@ export const Verify =  middy((event: APIGatewayProxyEventV2) => {
    }
 }).use(jsonBodyParser());
 
-export const Profile = async (event: APIGatewayProxyEventV2) => {
+export const Profile =  middy((event: APIGatewayProxyEventV2) => {
     // post / put / get
     const httpMethod = event.requestContext.http.method.toLowerCase();
 
@@ -42,9 +42,9 @@ export const Profile = async (event: APIGatewayProxyEventV2) => {
         default:
             return ErrorResponse(404, 'request method not supported');
     }
-}
+}).use(jsonBodyParser());
 
-export const Cart = async (event: APIGatewayProxyEventV2) => {
+export const Cart = middy((event: APIGatewayProxyEventV2) => {
     const httpMethod = event.requestContext.http.method.toLowerCase();
 
     switch (httpMethod) {
@@ -57,9 +57,9 @@ export const Cart = async (event: APIGatewayProxyEventV2) => {
         default:
             return ErrorResponse(404, 'request method not supported');
     }
-}
+}).use(jsonBodyParser());
 
-export const Payment = async (event: APIGatewayProxyEventV2) => {
+export const Payment = middy((event: APIGatewayProxyEventV2) => {
     const httpMethod = event.requestContext.http.method.toLowerCase();
 
     switch (httpMethod) {
@@ -72,4 +72,4 @@ export const Payment = async (event: APIGatewayProxyEventV2) => {
         default:
             return ErrorResponse(404, 'request method not supported');
     }
-}
+}).use(jsonBodyParser());

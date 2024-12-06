@@ -8,6 +8,8 @@ import { AppValidationError } from "../utils/errors";
 import { GenerateToken, GetHashedPassword, GetSalt, ValidatePassword, VerifyToken } from "../utils/password";
 import { LoginInput } from "../models/dto/LoginInput";
 import { GenerateVerificationCode, SendVerificationCode } from "../utils/notification";
+import { VerificationInput } from "../models/dto/VerificationInput";
+import { TimeDifference } from "../utils/dateHelper";
 
 @autoInjectable()
 export class UserService {
@@ -51,9 +53,9 @@ export class UserService {
             }
 
             const foundUser = await this.userRepository.findAccount(input.email);
-            const verified = await ValidatePassword(input.password, foundUser.password);
+            const isValid = await ValidatePassword(input.password, foundUser.password);
 
-            if (!verified) {
+            if (!isValid) {
                 throw new Error('credentails doesnt match');
             }
             const token = GenerateToken(foundUser);
@@ -67,24 +69,51 @@ export class UserService {
         const token = event.headers.authorization;
         const payload = await VerifyToken(token);
 
-        if (payload) {
-            const { code, expiry } = GenerateVerificationCode();
-            // save in db
-            await this.userRepository.updateVerificationCode(payload.user_id, code, expiry);
-            console.log(code, expiry);
+        if (!payload) return ErrorResponse(403, 'authorization failed');
 
-            // const response = await SendVerificationCode(code, payload.phone);
-            return SuccessResponse({
-                message: 'verification code has been send to Your registered mobile number',
-            });
-        }
+        const { code, expiry } = GenerateVerificationCode();
+        // save in db
+        await this.userRepository.updateVerificationCode(payload.user_id, code, expiry);
+        console.log(code, expiry);
 
+        // const response = await SendVerificationCode(code, payload.phone);
+        return SuccessResponse({
+            message: 'verification code has been send to Your registered mobile number',
+        });
     }
 
     async VerifyUser(event: APIGatewayProxyEventV2) {
-        return SuccessResponse({
-            message: 'response from Verify User',
-        });
+        const token = event.headers.authorization;
+        const payload = await VerifyToken(token);
+
+        if (!payload) return ErrorResponse(403, 'authorization failed');
+
+        const input = plainToClass(VerificationInput, event.body);
+        const error = await AppValidationError(input);
+        if (error) {
+            return ErrorResponse(404, error);
+        }
+
+        // find user account
+        const { verification_code, code_expiry } = await this.userRepository.findAccount(payload.email);
+
+        // check code if matches for this user and if isnt expired
+        if (verification_code === input.code) {
+            // check expiry
+            const currentTime = new Date();
+            const diff = TimeDifference(code_expiry, currentTime.toISOString(), 'm');
+
+            if (diff > 0) {
+                // update DB
+                console.log('verified successfully');
+                await this.userRepository.updateVerifyUser(payload.user_id);
+                return SuccessResponse({
+                    message: 'user verified',
+                });
+            }
+            return ErrorResponse(403, 'verification code is expired');
+        }
+        return ErrorResponse(400, 'invalid OTP');
     }
 
     // User Profile

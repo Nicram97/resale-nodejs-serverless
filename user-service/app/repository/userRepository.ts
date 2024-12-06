@@ -18,7 +18,7 @@ export class UserRepository extends DBOperation{
     }
 
     async findAccount(email: string) {
-        const queryString = 'SELECT user_id, email, password, phone, salt FROM users WHERE email = $1';
+        const queryString = 'SELECT user_id, email, password, phone, salt, verification_code, code_expiry FROM users WHERE email = $1';
         const values = [email];
         const result = await this.executeQuery(queryString, values);
 
@@ -29,12 +29,24 @@ export class UserRepository extends DBOperation{
     }
 
     async updateVerificationCode(userId: string, code: number, codeExpiry: Date) {
-        const queryString = 'UPDATE users SET verification_code=$1, code_expiry=$2, user_id=$3 RETURNING *';
+        const queryString = 'UPDATE users SET verification_code=$1, code_expiry=$2 WHERE user_id=$3 AND verified=FALSE RETURNING *';
         const values = [code, codeExpiry, userId];
         const result = await this.executeQuery(queryString, values);
 
         if (result.rowCount > 0) {
             return result.rows[0] as UserModel;
         }
+        throw new Error('user alredy verified');
+    }
+
+    async updateVerifyUser(userId: string) {
+        const queryString = 'UPDATE users SET verified=TRUE WHERE user_id=$1 AND verified=FALSE RETURNING *';
+        const values = [userId];
+        const result = await this.executeQuery(queryString, values);
+
+        if (result.rowCount > 0) {
+            return result.rows[0] as UserModel;
+        }
+        throw new Error('user alredy verified');
     }
 }
