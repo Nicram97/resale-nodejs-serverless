@@ -70,7 +70,10 @@ export class UserService {
         if (payload) {
             const { code, expiry } = GenerateVerificationCode();
             // save in db
-            const response = await SendVerificationCode(code, payload.phone);
+            await this.userRepository.updateVerificationCode(payload.user_id, code, expiry);
+            console.log(code, expiry);
+
+            // const response = await SendVerificationCode(code, payload.phone);
             return SuccessResponse({
                 message: 'verification code has been send to Your registered mobile number',
             });

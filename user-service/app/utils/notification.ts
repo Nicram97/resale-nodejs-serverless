@@ -1,7 +1,7 @@
 import twilio from 'twilio';
 
-const accountSid = '';
-const authToken = '';
+const accountSid = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+const authToken = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
 const client = twilio(accountSid, authToken);
 
 export const GenerateVerificationCode = () => {
@@ -14,7 +14,7 @@ export const GenerateVerificationCode = () => {
 export const SendVerificationCode = async (code: number, toPhoneNumber: string) => {
     const response = await client.messages.create({
         body: `Your verification code is ${code} it will expire in 30 minutes`,
-        from: '',
+        from: '+1234567890',
         to: toPhoneNumber.trim(),
     });
 
