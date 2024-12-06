@@ -11,12 +11,21 @@ export const Signup = middy((event: APIGatewayProxyEventV2) => {
     return userService.CreateUser(event);
 }).use(jsonBodyParser());
 
-export const Login = async (event: APIGatewayProxyEventV2) => {
+export const Login =  middy((event: APIGatewayProxyEventV2) => {
     return userService.LoginUser(event);
-}
+}).use(jsonBodyParser());
 
 export const Veryify = async (event: APIGatewayProxyEventV2) => {
-   return userService.VerifyUser(event);
+   const httpMethod = event.requestContext.http.method.toLowerCase();
+
+   switch (httpMethod) {
+       case 'post':
+            return userService.VerifyUser(event);
+       case 'get':
+            return userService.GetVerificationToken(event);
+       default:
+            return ErrorResponse(404, 'request method not supported');
+   }
 }
 
 export const Profile = async (event: APIGatewayProxyEventV2) => {
