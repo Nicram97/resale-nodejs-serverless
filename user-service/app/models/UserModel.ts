@@ -1,13 +1,18 @@
+import { UserAddressModel } from "./UserAddressModel";
+
 export interface UserModel {
-    user_id?: string;
+    user_id?: number;
     phone: string;
     email: string;
     password: string;
     salt: string;
-    user_type: 'BUYER' | 'SELLER';
+    user_type: UserType;
     first_name?: string;
     last_name?: string;
     profile_pic?: string;
     verification_code?: number;
     code_expiry?: string;
+    address?: UserAddressModel[];
 }
+
+export type UserType = 'BUYER' | 'SELLER';
