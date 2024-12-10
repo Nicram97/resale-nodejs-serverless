@@ -6,6 +6,7 @@ Techstack:
 
 - nodejs
 - serverless
+- AWS CDK
 - PostgreSQL
 - Amazon S3
 
@@ -137,3 +138,8 @@ It will allow seamless deployment and instant scaling when needed. Also it can v
 
 #### Service endpoints
 ![service_endpoints](./docks/service_endpoints.png)
+
+#### CDK overview
+How AWS-CDK architecture look like in contrary to serverless library itself aws-cdk allows more insights into
+how to create whole infrastructure with a code and lambdas, we have to take care of building blocks ourself.
+![product_microservice_using_cdk](./docks/product_microservice_using_cdk.png)
