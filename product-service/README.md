@@ -14,6 +14,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `npx cdk synth`   emits the synthesized CloudFormation template
 * `cdk bootstrap`   Bootstrapping is the process of preparing your AWS environment for usage with the AWS Cloud Development Kit (AWS CDK). Before you deploy a CDK stack into an AWS environment, the environment must first be bootstrapped. [aws-bootstrap](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html)
 * `cdk destroy`     Remove deployment etc.
+* `npm run dev`     Run dev environment IMPORTANT: Install aws SAM to be able to run it (if You use windows and gitbash
+You may be informed that "sam is not recognized command, then in console do alias sam="/c/Program\ Files/Amazon/AWSSAMCLI/bin/sam.cmd" should help)
 
 ## Description
 - Infrastructure is kept in lib directory
