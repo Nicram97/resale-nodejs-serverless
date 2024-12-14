@@ -1,3 +1,4 @@
+import { Duration } from "aws-cdk-lib";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction, NodejsFunctionProps } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
@@ -9,6 +10,8 @@ interface ServiceProps {
 
 export class ServiceStack extends Construct {
     public readonly productService: NodejsFunction;
+    public readonly categoryService: NodejsFunction;
+    public readonly dealsService: NodejsFunction;
 
     constructor(scope: Construct, id: string, props: ServiceProps) {
         super(scope, id);
@@ -20,12 +23,21 @@ export class ServiceStack extends Construct {
             environment: {
                 BUCKET_NAME: 'OUR_BUCKET_ARN',
             },
-            runtime: Runtime.NODEJS_18_X
+            runtime: Runtime.NODEJS_18_X,
+            timeout: Duration.seconds(10),
         };
 
         this.productService = new NodejsFunction(this, 'productLambda', {
-            entry: join(__dirname, '/../src/index.ts'),
+            entry: join(__dirname, '/../src/product-api.ts'),
             ...nodejsFunctionProps,
-        })
+        });
+        this.categoryService = new NodejsFunction(this, 'categoryLambda', {
+            entry: join(__dirname, '/../src/category-api.ts'),
+            ...nodejsFunctionProps,
+        });
+        this.dealsService = new NodejsFunction(this, 'dealsLambda', {
+            entry: join(__dirname, '/../src/deals-api.ts'),
+            ...nodejsFunctionProps,
+        });
     }
 }

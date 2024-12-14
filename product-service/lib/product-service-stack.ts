@@ -6,13 +6,15 @@ import { ApiGatewayStack } from './api-gateway-stack';
 export class ProductServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-    // spawn service
-    const { productService } = new ServiceStack(this, 'ProductService', {
+    // spawn services which represent lambdas
+    const { productService, categoryService, dealsService } = new ServiceStack(this, 'ProductService', {
       
     });
-    // spawn api gateway
+    // spawn api gateway and pass lambda services inside of api gateway to "show them to the world through API"
     new ApiGatewayStack(this, 'ProductApiGateway', {
-      productService
+      productService,
+      categoryService,
+      dealsService,
     });
   }
 }
