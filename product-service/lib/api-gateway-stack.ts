@@ -8,6 +8,7 @@ interface ApiGatewayStackProps {
     productService: IFunction;
     categoryService: IFunction;
     dealsService: IFunction;
+    imageService: IFunction;
 }
 
 // interface representing endpoints resource it accepts ***REMOVED*** name + methods and can accept child paths as additional resources
@@ -23,7 +24,7 @@ export class ApiGatewayStack extends Construct {
         this.addResource('product', props);
     }
 
-    addResource(serviceName: string, { categoryService, productService, dealsService } : ApiGatewayStackProps) {
+    addResource(serviceName: string, { categoryService, productService, dealsService, imageService } : ApiGatewayStackProps) {
         // for multiple resources we use aws_apigateway.RestApi();
         const apgw = new aws_apigateway.RestApi(this, `${serviceName}-ApiGrt`);
         
@@ -55,6 +56,11 @@ export class ApiGatewayStack extends Construct {
                 name: '{id}',
                 methods: ['GET', 'PUT', 'DELETE'],
             }
+        });
+
+        this.createEndpoints(imageService, apgw, {
+            name: 'uploader',
+            methods: ['GET']
         });
     }
 

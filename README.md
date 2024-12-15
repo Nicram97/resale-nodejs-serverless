@@ -6,7 +6,7 @@ Techstack:
 
 - nodejs
 - serverless
-- AWS CDK
+- AWS CDK/SDK
 - PostgreSQL
 - Amazon S3
 
