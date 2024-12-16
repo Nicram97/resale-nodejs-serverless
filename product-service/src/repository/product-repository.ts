@@ -1,10 +1,10 @@
 import { ProductInput } from "../dto/product-inputs";
-import { ProductDoc, products } from "../models/product-model";
+import { ProductDoc, products } from "../models";
 
 export class ProductRepository {
     constructor() {}
 
-    async createProduct({ name, description, price, category_id, image_url }: ProductInput) {
+    async createProduct({ name, description, price, category_id, image_url }: ProductInput): Promise<ProductDoc> {
         const result = await products.create({
             name,
             description,
@@ -37,8 +37,11 @@ export class ProductRepository {
     }
 
     async deleteProduct(id: string) {
-        return products.deleteOne({
+        const { category_id } = (await products.findById(id)) as ProductDoc;
+        const deleteResult = await products.deleteOne({
             _id: id,
         });
+
+        return { category_id, deleteResult };
     }
 }

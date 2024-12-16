@@ -15,7 +15,7 @@ export class ProductServiceStack extends cdk.Stack {
       productService,
       categoryService,
       dealsService,
-      imageService
+      imageService,
     } = new ServiceStack(this, 'ProductService', {
       bucket: bucket.bucketName
     });

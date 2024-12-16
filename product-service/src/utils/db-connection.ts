@@ -10,10 +10,10 @@ export default async (): Promise<mongoose.Mongoose> => {
         const connection = await mongoose.connect(DB_URL, {
             autoIndex: true,
         });
-        return connection
+        console.log('connected to Db', DB_URL);
+        return connection;
     } catch (e) {
         console.error(e);
         throw e;
     }
-
 }

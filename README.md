@@ -8,6 +8,7 @@ Techstack:
 - serverless
 - AWS CDK/SDK
 - PostgreSQL
+- MongoDb
 - Amazon S3
 
 ### TLDR

@@ -4,7 +4,8 @@ import { ErrorResponse, SuccessResponse } from "../utils/response";
 import { plainToClass } from "class-transformer";
 import { AppValidationError } from "../utils/errors";
 import { ProductInput } from "../dto/product-inputs";
-
+import { CategoryRepository } from "../repository/category-repository";
+import '../utils/index';
 export class ProductService {
     repository: ProductRepository;
 
@@ -12,14 +13,24 @@ export class ProductService {
         this.repository = repository;
     }
 
+    async ResponseWithError(event: APIGatewayEvent) {
+        return ErrorResponse(404, new Error('method not allowed!'));
+    }
+
     async createProduct(event: APIGatewayEvent) {
-        const input = plainToClass(ProductInput, JSON.parse(event.body!));
+        const input = plainToClass(ProductInput, event.body);
         const error = await AppValidationError(input);
         if (error) {
             return ErrorResponse(404, error);
         }
 
         const data = await this.repository.createProduct(input);
+
+        await new CategoryRepository()
+            .addItem({
+                id: input.category_id,
+                products: [ (data._id as string) ],
+            })
         return SuccessResponse(data);
     }
 
@@ -44,7 +55,7 @@ export class ProductService {
         const productId = event.pathParameters?.id;
         if (!productId) return ErrorResponse(403, 'provide product id');
 
-        const input = plainToClass(ProductInput, JSON.parse(event.body!));
+        const input = plainToClass(ProductInput, event.body);
         const error = await AppValidationError(input);
         if (error) {
             return ErrorResponse(404, error);
@@ -59,7 +70,12 @@ export class ProductService {
         const productId = event.pathParameters?.id;
         if (!productId) return ErrorResponse(403, 'provide product id');
 
-        const data = await this.repository.deleteProduct(productId);
-        return SuccessResponse(data);
+        const { category_id, deleteResult} = await this.repository.deleteProduct(productId);
+        await new CategoryRepository()
+        .addItem({
+            id: category_id,
+            products: [ (productId as string) ],
+        })
+        return SuccessResponse(deleteResult);
     }
 }
