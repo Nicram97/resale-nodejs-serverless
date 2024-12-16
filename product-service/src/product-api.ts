@@ -1,16 +1,13 @@
 import { APIGatewayEvent, APIGatewayProxyResult, Context } from "aws-lambda";
-import { ErrorResponse } from "./utils/response";
 import { ProductService } from "./service/product-service";
 import { ProductRepository } from "./repository/product-repository";
-import dbConnection from "./utils/db-connection";
+import middy from "@middy/core";
+import jsonBodyParser from "@middy/http-json-body-parser";
 
-(async () => {
-    const connection = await dbConnection();
-    console.log('WTF', connection)
-})();
+
 const productSerivce = new ProductService(new ProductRepository());
 
-export const handler = async (
+const lambdaHandler = (
     event: APIGatewayEvent,
     context: Context,
 ): Promise<APIGatewayProxyResult> => {
@@ -30,7 +27,7 @@ export const handler = async (
             break;
         case 'get':
             // return isRoot ? 'return get products' : 'call get product by id';
-            return isRoot ? productSerivce.getProducts(event) : productSerivce.getProduct(event);
+            return isRoot ? productSerivce.getProducts() : productSerivce.getProduct(event);
         case 'put':
             if (!isRoot) {
                 // call edit product
@@ -43,5 +40,9 @@ export const handler = async (
                 return productSerivce.deleteProduct(event);
             }
     }
-    return ErrorResponse(404, 'request method not allowed');
+    return productSerivce.ResponseWithError(event);
 };
+
+export const handler = middy()
+.use(jsonBodyParser())
+.handler(lambdaHandler);
