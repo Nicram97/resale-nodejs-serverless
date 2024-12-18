@@ -4,8 +4,10 @@ import { APIGatewayProxyEventV2 } from "aws-lambda";
 import middy from "@middy/core";
 import jsonBodyParser from "@middy/http-json-body-parser";
 import { container } from "tsyringe";
+import { CartService } from "../service/cartService";
 
 const userService = container.resolve(UserService);
+const cartService = container.resolve(CartService);
 
 export const Signup = middy((event: APIGatewayProxyEventV2) => {
     return userService.CreateUser(event);
@@ -49,11 +51,13 @@ export const Cart = middy((event: APIGatewayProxyEventV2) => {
 
     switch (httpMethod) {
         case 'post':
-            return userService.CreateCart(event);
+            return cartService.CreateCart(event);
         case 'get':
-            return userService.GetCart(event);
+            return cartService.GetCart(event);
         case 'put':
-            return userService.EditCart(event);
+            return cartService.EditCart(event);
+        case 'delete':
+            return cartService.DeleteCart(event);
         default:
             return ErrorResponse(404, 'request method not supported');
     }
