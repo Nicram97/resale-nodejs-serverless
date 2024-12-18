@@ -144,3 +144,7 @@ It will allow seamless deployment and instant scaling when needed. Also it can v
 How AWS-CDK architecture look like in contrary to serverless library itself aws-cdk allows more insights into
 how to create whole infrastructure with a code and lambdas, we have to take care of building blocks ourself.
 ![product_microservice_using_cdk](./docks/product_microservice_using_cdk.png)
+
+#### Microservice communication
+To follow microservice architecture, we have to separate data and resposibilities between services, yet to have fully functioning app we require a communication between those services. To achieve that we can leverage multiple patterns. For this project we will use only part of available solutions
+![microservice_communication](./docks/microservice-communication.png)

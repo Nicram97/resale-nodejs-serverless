@@ -3,9 +3,9 @@ import { ProductRepository } from "../repository/product-repository";
 import { ErrorResponse, SuccessResponse } from "../utils/response";
 import { plainToClass } from "class-transformer";
 import { AppValidationError } from "../utils/errors";
-import { ProductInput } from "../dto/product-inputs";
+import { ProductInput } from "../dto/product-input";
 import { CategoryRepository } from "../repository/category-repository";
-import '../utils/index';
+import { ServiceInput } from "../dto/service-input";
 export class ProductService {
     repository: ProductRepository;
 
@@ -77,5 +77,28 @@ export class ProductService {
             products: [ (productId as string) ],
         })
         return SuccessResponse(deleteResult);
+    }
+
+    // http calls // later convert to RPC & Queue
+    async handleQueueOperation(event: APIGatewayEvent) {
+        const input = plainToClass(ServiceInput, event.body);
+        const error = await AppValidationError(input);
+        if (error) {
+            return ErrorResponse(404, error);
+        }
+
+        // get product info from repository
+        const data = await this.repository.getProductById(input.productId);
+
+        if (data) {
+            const { _id, name, price, image_url } = data;
+            return SuccessResponse({
+                product_id: _id,
+                name,
+                price,
+                image_url
+            });
+        }
+        return ErrorResponse(404, 'Product not found');
     }
 }

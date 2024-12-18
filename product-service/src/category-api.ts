@@ -3,6 +3,7 @@ import { CategoryService } from "./service/category-service";
 import { CategoryRepository } from "./repository/category-repository";
 import middy from "@middy/core";
 import jsonBodyParser from "@middy/http-json-body-parser";
+import './utils/index';
 
 const categoryService = new CategoryService(new CategoryRepository());
 

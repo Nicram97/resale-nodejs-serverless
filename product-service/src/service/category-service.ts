@@ -4,7 +4,6 @@ import { plainToClass } from "class-transformer";
 import { AppValidationError } from "../utils/errors";
 import { ErrorResponse, SuccessResponse } from "../utils/response";
 import { CategoryInput } from "../dto/category-input";
-import '../utils/index';
 
 export class CategoryService {
     repository: CategoryRepository;
