@@ -9,6 +9,7 @@ interface ApiGatewayStackProps {
     categoryService: IFunction;
     dealsService: IFunction;
     imageService: IFunction;
+    queueService: IFunction;
 }
 
 // interface representing endpoints resource it accepts root name + methods and can accept child paths as additional resources
@@ -24,7 +25,7 @@ export class ApiGatewayStack extends Construct {
         this.addResource('product', props);
     }
 
-    addResource(serviceName: string, { categoryService, productService, dealsService, imageService } : ApiGatewayStackProps) {
+    addResource(serviceName: string, { categoryService, productService, dealsService, imageService, queueService } : ApiGatewayStackProps) {
         // for multiple resources we use aws_apigateway.RestApi();
         const apgw = new aws_apigateway.RestApi(this, `${serviceName}-ApiGrt`);
         
@@ -62,6 +63,11 @@ export class ApiGatewayStack extends Construct {
             name: 'uploader',
             methods: ['GET']
         });
+
+        this.createEndpoints(queueService, apgw, {
+            name: 'products-queue',
+            methods: ['POST']
+        })
     }
 
     createEndpoints( handler: IFunction, resource: RestApi, { name, methods, child }: ResourceType) {

@@ -1,4 +1,4 @@
-import { ProductInput } from "../dto/product-inputs";
+import { ProductInput } from "../dto/product-input";
 import { ProductDoc, products } from "../models";
 
 export class ProductRepository {
@@ -20,7 +20,7 @@ export class ProductRepository {
         return products.find().skip(offset).limit(pages ? pages : 500);
     }
 
-    async getProductById(id: string) {
+    async getProductById(id: string): Promise<ProductDoc | null> {
         return products.findById(id);
     }
 
