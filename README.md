@@ -148,3 +148,8 @@ how to create whole infrastructure with a code and lambdas, we have to take care
 #### Microservice communication
 To follow microservice architecture, we have to separate data and resposibilities between services, yet to have fully functioning app we require a communication between those services. To achieve that we can leverage multiple patterns. For this project we will use only part of available solutions
 ![microservice_communication](./docks/microservice-communication.png)
+
+#### RDS Management
+To use databases in production we need them in the cloud not just locally from docker,
+to achieve that we can leverage AWS RDS which comes in two possible configuration (main focus is on self managed). Different types of settings provides different pros and cons, the more AWS manages it for You the more You pay.
+![aws_rds_owerview](./docks/aws_rds_overview.png)
