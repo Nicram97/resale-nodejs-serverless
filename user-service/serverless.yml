@@ -9,6 +9,15 @@ provider:
   region: 'eu-west-1'
   httpApi:
     cors: true
+  # SNS Topic
+  environment:
+    SNS_TOPIC: { Ref: CustomerTopic }
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "sns:Publish"
+      Resource:
+        - !Ref CustomerTopic
 
 custom:
   stage: "dev"
@@ -88,3 +97,19 @@ functions:
 plugins:
   - serverless-offline
   - serverless-plugin-typescript
+
+resources:
+  Resources:
+    CustomerTopic:
+      Type: AWS::SNS::TOPIC
+      Properties:
+        DisplayName: "customer sns topic description"
+        TopicName: CustomerTopic
+
+  # Used as export methode so other service/aws etc can use it
+  Outputs:
+    CustomerTopicInfo:
+      Description: customer-topic
+      Value: !Ref CustomerTopic
+      Export:
+        Name: customer-topic

@@ -9,6 +9,7 @@ import { CartInput, UpdateCartInput } from "../models/dto/CartInput";
 import { CartItemModel } from "../models/CartItemModel";
 import { ShoppingCartModel } from "../models/ShoppingCartModel";
 import { PullData } from "../message-queue";
+import aws from 'aws-sdk';
 
 @autoInjectable()
 export class CartService {
@@ -136,18 +137,37 @@ export class CartService {
 
     async CollectPayment(event: APIGatewayProxyEventV2) {
         try {
+            // check user
+            const token = event.headers.authorization;
+            const payload = await VerifyToken(token);
+            if (!payload) return ErrorResponse(403, 'authorization failed');
+
             // initialize Payment gateway
 
             // authenticate payment confirmation
 
             // get cart items
+            const cartItems  = await this.repository.findCartItems(payload.user_id);
 
             // send data to SNS topic to create Order [Transaction MS] => email to user
+            const params = {
+                Message: JSON.stringify(cartItems),
+                TopicArn: process.env.SNS_TOPIC,
+                MessageAttributes: {
+                    actionType: {
+                        DataType: "String",
+                        StringValue: "place_order"
+                    }
+                }
+            }
+            const sns = new aws.SNS();
+            const response = await sns.publish(params).promise();
 
             // Send tenative message to user
 
             return SuccessResponse({
-                msg: 'Payment Processing...'
+                msg: 'Payment Processing...',
+                response
             });
         } catch(e) {
             return ErrorResponse(500, e);
