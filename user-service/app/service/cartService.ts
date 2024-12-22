@@ -133,4 +133,24 @@ export class CartService {
             return ErrorResponse(500, e);
         }
     }
+
+    async CollectPayment(event: APIGatewayProxyEventV2) {
+        try {
+            // initialize Payment gateway
+
+            // authenticate payment confirmation
+
+            // get cart items
+
+            // send data to SNS topic to create Order [Transaction MS] => email to user
+
+            // Send tenative message to user
+
+            return SuccessResponse({
+                msg: 'Payment Processing...'
+            });
+        } catch(e) {
+            return ErrorResponse(500, e);
+        }
+    }
 }
