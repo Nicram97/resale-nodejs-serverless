@@ -153,3 +153,25 @@ To follow microservice architecture, we have to separate data and resposibilitie
 To use databases in production we need them in the cloud not just locally from docker,
 to achieve that we can leverage AWS RDS which comes in two possible configuration (main focus is on self managed). Different types of settings provides different pros and cons, the more AWS manages it for You the more You pay.
 ![aws_rds_owerview](./docks/aws_rds_overview.png)
+
+#### SNS & SQS flow
+SNS stands for Simple Notification Service and SQS stands for Simple Queue Service, both are often used to serve as event driven architecture mechanism. Ofet used in stead of Kafka or RabitMQ (or working together with them depending on the need).
+![sns_sqs_aws_communication_event_driven](./docks/sns_sqs_aws_communication_event_driven.png)
+
+Example flow:
+1. After cart creation we have all "items" ready
+2. User tries to place the order (Frontend -> Backend call)
+3. Backed user service will call "Stripe" which will take care of encrypting and passing payment data to proper bank account
+4. Bank will validate data provided by the Stripe and then if successfull, charge the card/account
+5. Return response to "Stripe"
+6. Stripe with webhook will provide response to user service
+7. User service creates SNS message which will be moved to SQS Queue
+8. From SQS Queue transaction service will extract messages
+
+
+
+To leverage mentioned flow Publish & Subscribe pattern is used also (someone/something publish message someone/something listens and extract the message)
+![publish_subscribe%20pattern](./docks/publish_subscribe%20pattern.png)
+
+Also pulling from queue (for SQS) will be used, both of those services and techniques will provide good throughput and efficiency
+![event_driven_sns_sqs](./docks/event_driven_sns_sqs.png)
