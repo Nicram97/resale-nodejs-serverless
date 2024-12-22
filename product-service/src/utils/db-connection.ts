@@ -4,8 +4,8 @@ import mongoose from "mongoose";
 mongoose.set('strictQuery', false);
 
 export default async (): Promise<mongoose.Mongoose> => {
-    // if You are using docker mongodb instead of localhost use host.docker.internal
-    const DB_URL = 'mongodb://host.docker.internal:27017/resale-nodejs-serverless';
+    // if You are using docker mongodb instead of localhost use host.docker.internal + AWS SAM
+    const DB_URL = '***REMOVED***' // 'mongodb://host.docker.internal:27017/resale-nodejs-serverless';
     try {
         const connection = await mongoose.connect(DB_URL, {
             autoIndex: true,
