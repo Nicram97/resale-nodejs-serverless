@@ -78,6 +78,12 @@ functions:
       - httpApi:
           path: /payment
           method: put
+  order:
+    handler: app/handler.CollectPayment
+    events:
+      - httpApi:
+          path: /place-order
+          method: post
 
 plugins:
   - serverless-offline
