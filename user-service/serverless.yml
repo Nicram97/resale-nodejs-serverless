@@ -1,6 +1,8 @@
 service: user-service
 frameworkVersion: '3'
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs18.x
@@ -44,64 +46,97 @@ functions:
       - httpApi:
           path: /verify
           method: post
+  get-verification-code:
+    handler: app/handler.GetVerificationCode
+    events:
       - httpApi:
           path: /verify
           method: get
-  profile:
-    handler: app/handler.Profile
+  create-profile:
+    handler: app/handler.CreateProfile
+    events:
+      - httpApi:
+          path: /profile
+          method: post
+  get-profile:
+    handler: app/handler.GetProfile
     events:
       - httpApi:
           path: /profile
           method: get
-      - httpApi:
-          path: /profile
-          method: post
+  edit-profile:
+    handler: app/handler.EditProfile
+    events:
       - httpApi:
           path: /profile
           method: put
-  cart:
-    handler: app/handler.Cart
+  create-cart:
+    handler: app/handler.CreateCart
+    timeout: 15
+    events:
+      - httpApi:
+          path: /cart
+          method: post
+  get-cart:
+    handler: app/handler.GetCart
     timeout: 15
     events:
       - httpApi:
           path: /cart
           method: get
+  edit-cart:
+    handler: app/handler.EditCart
+    timeout: 15
+    events:
       - httpApi:
           path: /cart
-          method: post
-      - httpApi:
-          path: /cart/{id}
           method: put
+  delete-cart:
+    handler: app/handler.DeleteCart
+    timeout: 15
+    events:
       - httpApi:
-          path: /cart/{id}
+          path: /cart
           method: delete
-  payment:
-    handler: app/handler.Payment
+  create-payment:
+    handler: app/handler.CreatPayment
+    events:
+      - httpApi:
+          path: /payment
+          method: post
+  get-payment:
+    handler: app/handler.GetPayment
     events:
       - httpApi:
           path: /payment
           method: get
-      - httpApi:
-          path: /payment
-          method: post
+  edit-payment:
+    handler: app/handler.EditPayment
+    events:
       - httpApi:
           path: /payment
           method: put
-  order:
+  collect-payment:
     handler: app/handler.CollectPayment
     events:
       - httpApi:
-          path: /place-order
+          path: /collect-payment
           method: post
 
 plugins:
   - serverless-offline
   - serverless-plugin-typescript
+  - serverless-plugin-optimize
+  - serverless-plugin-common-excludes
+  - serverless-plugin-include-dependencies
+
+package:
+  individually: true
 
 resources:
   Resources:
     CustomerTopic:
-      Type: AWS::SNS::TOPIC
+      Type: AWS::SNS::Topic
       Properties:
         DisplayName: "customer sns topic description"
         TopicName: CustomerTopic
