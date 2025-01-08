@@ -66,7 +66,7 @@ export class UserService {
         }
     }
 
-    async GetVerificationToken(event: APIGatewayProxyEventV2) {
+    async GetVerificationCode(event: APIGatewayProxyEventV2) {
         const token = event.headers.authorization;
         const payload = await VerifyToken(token);
 
@@ -175,19 +175,19 @@ export class UserService {
     }
 
     // Payment section
-    async CreatePaymentMethod(event: APIGatewayProxyEventV2) {
+    async CreatePayment(event: APIGatewayProxyEventV2) {
         return SuccessResponse({
             message: 'response from Create Payment',
         });
     }
 
-    async GetPaymentMethod(event: APIGatewayProxyEventV2) {
+    async GetPayment(event: APIGatewayProxyEventV2) {
         return SuccessResponse({
             message: 'response from Get Payment',
         });
     }
 
-    async EditPaymentMethod(event: APIGatewayProxyEventV2) {
+    async EditPayment(event: APIGatewayProxyEventV2) {
         return SuccessResponse({
             message: 'response from Edit Payment',
         });
