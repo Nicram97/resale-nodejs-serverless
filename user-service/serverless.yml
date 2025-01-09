@@ -122,6 +122,12 @@ functions:
       - httpApi:
           path: /collect-payment
           method: post
+  place-order:
+    handler: app/handler.PlaceOrder
+    events:
+      - httpApi:
+          path: /place-order
+          method: post
 
 plugins:
   - serverless-offline

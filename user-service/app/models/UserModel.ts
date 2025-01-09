@@ -13,6 +13,8 @@ export interface UserModel {
     verification_code?: number;
     code_expiry?: string;
     address?: UserAddressModel[];
+    stripe_id?: string;
+    payment_id?: string;
 }
 
 export type UserType = 'BUYER' | 'SELLER';

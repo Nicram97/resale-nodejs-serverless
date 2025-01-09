@@ -10,6 +10,8 @@ import { CartItemModel } from "../models/CartItemModel";
 import { ShoppingCartModel } from "../models/ShoppingCartModel";
 import { PullData } from "../message-queue";
 import aws from 'aws-sdk';
+import { UserRepository } from "../repository/userRepository";
+import { APPLICATION_FEE, CreatePaymentSession, RetrievePayment, STRIPE_FEE } from "../utils/payment";
 
 @autoInjectable()
 export class CartService {
@@ -81,8 +83,18 @@ export class CartService {
             const payload = await VerifyToken(token);
             if (!payload) return ErrorResponse(403, 'authorization failed');
 
-            const result  = await this.repository.findCartItems(payload.user_id);
-            return SuccessResponse(result);
+            const cartItems  = await this.repository.findCartItems(payload.user_id);
+            const productsAmountToPay = cartItems.reduce(
+                (sum, item) => sum + item.price * item.item_qty,
+                0
+            );
+            const appFee = APPLICATION_FEE(productsAmountToPay) + STRIPE_FEE(productsAmountToPay);
+
+            return SuccessResponse({
+                cartItems,
+                totalAmount: productsAmountToPay,
+                appFee
+            });
         } catch(e) {
             return ErrorResponse(500, e);
         }
@@ -142,10 +154,52 @@ export class CartService {
             const payload = await VerifyToken(token);
             if (!payload) return ErrorResponse(403, 'authorization failed');
 
+            const { stripe_id, email, phone } = await new UserRepository().getUserProfile(payload.user_id);
+            const cartItems  = await this.repository.findCartItems(payload.user_id);
+
+            const productsAmountToPay = cartItems.reduce(
+                (sum, item) => sum + item.price * item.item_qty,
+                0
+            );
+            const appFee = APPLICATION_FEE(productsAmountToPay);
+            const stripeFee = STRIPE_FEE(productsAmountToPay);
+            const amountAndFees = productsAmountToPay + appFee + stripeFee;
+
             // initialize Payment gateway
+            const { client_secret, public_key, customerId, paymentId } = await CreatePaymentSession({
+                email,
+                phone,
+                amount: amountAndFees,
+                customerId: stripe_id
+            });
 
-            // authenticate payment confirmation
+            await new UserRepository().updateUserPayment({
+                userId: payload.user_id,
+                paymentId,
+                customerId,
+            });
 
+            return SuccessResponse({
+                client_secret, public_key
+            });
+
+        } catch(e) {
+            return ErrorResponse(500, e);
+        }
+    }
+
+    async PlaceOrder(event: APIGatewayProxyEventV2) {
+        // check user
+        const token = event.headers.authorization;
+        const payload = await VerifyToken(token);
+        if (!payload) return ErrorResponse(403, 'authorization failed');
+
+        // verify payment
+        const { payment_id } = await new UserRepository().getUserProfile(payload.user_id);
+        const paymentInfo = await RetrievePayment(payment_id);
+        console.log(paymentInfo);
+
+        if (paymentInfo.status === 'succeeded') {
             // get cart items
             const cartItems  = await this.repository.findCartItems(payload.user_id);
 
@@ -163,14 +217,8 @@ export class CartService {
             const sns = new aws.SNS();
             const response = await sns.publish(params).promise();
 
-            // Send tenative message to user
-
-            return SuccessResponse({
-                msg: 'Payment Processing...',
-                response
-            });
-        } catch(e) {
-            return ErrorResponse(500, e);
+            return SuccessResponse({ msg: 'success', paymentInfo });
         }
+        return ErrorResponse(503, new Error('payment failed'));
     }
 }

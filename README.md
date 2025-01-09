@@ -5,14 +5,22 @@ Mimic ebay like backend behaviour.
 Techstack:
 
 - nodejs
+- Typescript
 - serverless
 - AWS CDK/SDK
+- AWS SNS/SQS
+- AWS EC2 (self managed postgres on ubuntu machine)
 - PostgreSQL
 - MongoDb
 - Amazon S3
+- Stripe integration
 
 ### TLDR
-* How To start: run `npm run dev`
+Each service has its package.json file which has command to run for dev, remember to set data for postgres and mongodb properly.
+
+
+### NOTES
+- Remember to add .env file (was not available in previously) and fill it with proper data
 
 ## Project Design
 

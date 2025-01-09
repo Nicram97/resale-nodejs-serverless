@@ -10,11 +10,6 @@ export const CollectPayment = middy((event: APIGatewayProxyEventV2) => {
     return cartService.CollectPayment(event);
 }).use(jsonBodyParser());
 
-// export const GetOrders = middy((event: APIGatewayProxyEventV2) => {
-//     return cartService.GetOrders(event);
-// }).use(jsonBodyParser());
-
-
-// export const GetOrderById = middy((event: APIGatewayProxyEventV2) => {
-//     return cartService.GetOrderById(event);
-// }).use(jsonBodyParser());
+export const PlaceOrder = middy((event: APIGatewayProxyEventV2) => {
+    return cartService.PlaceOrder(event);
+}).use(jsonBodyParser());
