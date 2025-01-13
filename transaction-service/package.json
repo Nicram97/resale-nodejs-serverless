@@ -15,7 +15,8 @@
     "migrate": "db-migrate up",
     "migrate-down": "db-migrate down",
     "migration-create": "npm run arg-helper \"db-migrate create $ --sql-file\"",
-    "deploy": "cdk deploy --verbose --trace"
+    "deploy": "cdk deploy --verbose --trace",
+    "destroy": "cdk destroy"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.146",
