@@ -1,12 +1,11 @@
 import * as cdk from 'aws-cdk-lib';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
-import { NodejsFunction, NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { SubscriptionFilter, Topic } from 'aws-cdk-lib/aws-sns';
 import { SqsSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
-import { join } from 'path';
 import { ServiceStack } from './service-stack';
 import { ApiGatewayStack } from './api-gateway-stack';
 
@@ -44,17 +43,8 @@ export class TransactionServiceStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(10)
     };
 
-    const createOrderHandler = new NodejsFunction(
-      this,
-      'create-order-handler',
-      {
-        entry: join(__dirname, '/../src/order/create.ts'),
-        ...nodeJsFunctionProps,
-      },
-    );
-
     const { createOrder, getOrder, getOrders, getTransaction } = new ServiceStack(this, 'transaction-service', {});
-    createOrderHandler.addEventSource(new SqsEventSource(orderQueue));
+    createOrder.addEventSource(new SqsEventSource(orderQueue));
 
     new ApiGatewayStack(this, 'transaction-api-gateway', {
       createOrder,
