@@ -32,7 +32,7 @@ export class ServiceStack extends Construct {
 
     createHandlers(props: NodejsFunctionProps, handler: string) {
         return new NodejsFunction(this, handler, {
-            entry: join(__dirname, '/../handlers/index.ts'),
+            entry: join(__dirname, '/../src/handlers/index.ts'),
             handler: handler,
             ...props
         });
