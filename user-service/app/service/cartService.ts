@@ -205,7 +205,11 @@ export class CartService {
 
             // send data to SNS topic to create Order [Transaction MS] => email to user
             const params = {
-                Message: JSON.stringify(cartItems),
+                Message: JSON.stringify({
+                    userId: payload.user_id,
+                    items: cartItems,
+                    transaction: paymentInfo
+                }),
                 TopicArn: process.env.SNS_TOPIC,
                 MessageAttributes: {
                     actionType: {
@@ -216,8 +220,8 @@ export class CartService {
             }
             const sns = new aws.SNS();
             const response = await sns.publish(params).promise();
-
-            return SuccessResponse({ msg: 'success', paymentInfo });
+            console.log(response)
+            return SuccessResponse({ msg: 'success', params });
         }
         return ErrorResponse(503, new Error('payment failed'));
     }

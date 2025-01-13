@@ -7,6 +7,8 @@ import { SqsSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
 import { Queue } from 'aws-cdk-lib/aws-sqs';
 import { Construct } from 'constructs';
 import { join } from 'path';
+import { ServiceStack } from './service-stack';
+import { ApiGatewayStack } from './api-gateway-stack';
 
 export class TransactionServiceStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -51,6 +53,14 @@ export class TransactionServiceStack extends cdk.Stack {
       },
     );
 
-    createOrderHandler.addEventSource(new SqsEventSource(orderQueue))
+    const { createOrder, getOrder, getOrders, getTransaction } = new ServiceStack(this, 'transaction-service', {});
+    createOrderHandler.addEventSource(new SqsEventSource(orderQueue));
+
+    new ApiGatewayStack(this, 'transaction-api-gateway', {
+      createOrder,
+      getOrders,
+      getOrder,
+      getTransaction,
+    });
   }
 }
