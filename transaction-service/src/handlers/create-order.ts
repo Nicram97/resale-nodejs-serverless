@@ -29,6 +29,7 @@ export const createOrderHandler = async (event: SQSEvent) => {
                 created,
                 currency,
                 customer,
+                payment_id,
                 payment_method,
                 payment_method_types,
                 status,
@@ -36,7 +37,7 @@ export const createOrderHandler = async (event: SQSEvent) => {
 
             // create transaction
             const transactionQuery = `INSERT INTO transactions(
-                id,
+                payment_id,
                 amount,
                 amount_received,
                 capture_method,
@@ -49,7 +50,7 @@ export const createOrderHandler = async (event: SQSEvent) => {
             ) VALUES($1,$2,$3,$4,5,$6,$7,$8,$9,$10) RETURNING *`;
 
             const transactionValues = [
-                id,
+                payment_id,
                 amount,
                 amount_received,
                 capture_method,

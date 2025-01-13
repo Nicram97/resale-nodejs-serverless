@@ -18,6 +18,7 @@ export interface TransactionInput {
     created: number;
     currency: string;
     customer: string;
+    payment_id: string;
     payment_method: string;
     payment_method_types: string[];
     status: string;
