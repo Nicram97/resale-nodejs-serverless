@@ -17,6 +17,7 @@
   "description": "",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "serverless-dotenv-plugin": "^6.0.0",
     "serverless-offline": "^12.0.3",
     "serverless-plugin-common-excludes": "^4.0.0",
     "serverless-plugin-include-dependencies": "^6.1.1",
