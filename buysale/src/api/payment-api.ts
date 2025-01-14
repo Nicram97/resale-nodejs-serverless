@@ -20,7 +20,7 @@ export const CollectPaymentApi = async (
 export const ConfirmOrder = async (token: string): Promise<ResponseModel> => {
   try {
     const auth = axiosAuth(token);
-    const response = await auth.post(`${BASE_URL}/order`);
+    const response = await auth.post(`${BASE_URL}/place-order`);
     return handleResponse(response);
   } catch (error) {
     console.log(error);
