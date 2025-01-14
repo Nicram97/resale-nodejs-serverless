@@ -21,8 +21,8 @@ import { MakePayment } from "../Payment";
 interface CartProps {}
 
 interface PaymentCredential {
-  secret: string;
-  publishableKey: string;
+  client_secret: string;
+  public_key: string;
 }
 
 const CartPage: React.FC<CartProps> = ({}) => {
@@ -249,11 +249,12 @@ const CartPage: React.FC<CartProps> = ({}) => {
 
   const paymentOption = () => {
     if (paymentCredential) {
+      console.log('paycred', paymentCredential);
       return (
         <MakePayment
           totalAmount={getTotal()}
-          clientSecret={paymentCredential.secret}
-          pk={paymentCredential.publishableKey}
+          clientSecret={paymentCredential.client_secret}
+          pk={paymentCredential.public_key}
           onSuccess={(paymentId: string) => {
             console.log("payment was successful!");
             navigate(`/post-order?id=${paymentId}`);
