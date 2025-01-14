@@ -184,6 +184,7 @@ export class CartService {
             });
 
         } catch(e) {
+            console.log(e);
             return ErrorResponse(500, e);
         }
     }
