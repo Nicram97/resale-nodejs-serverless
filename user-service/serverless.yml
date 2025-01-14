@@ -14,6 +14,8 @@ provider:
   # SNS Topic
   environment:
     SNS_TOPIC: { Ref: CustomerTopic }
+    STRIPE_SECRET_KEY: ${env:STRIPE_SECRET_KEY},
+    STRIPE_PUBLIC_KEY: ${env:STRIPE_PUBLIC_KEY}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -131,6 +133,7 @@ functions:
 
 plugins:
   - serverless-offline
+  - serverless-dotenv-plugin
   - serverless-plugin-typescript
   - serverless-plugin-optimize
   - serverless-plugin-common-excludes
