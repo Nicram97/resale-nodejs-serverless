@@ -183,3 +183,8 @@ To leverage mentioned flow Publish & Subscribe pattern is used also (someone/som
 
 Also pulling from queue (for SQS) will be used, both of those services and techniques will provide good throughput and efficiency
 ![event_driven_sns_sqs](./docks/event_driven_sns_sqs.png)
+
+
+#### Seller flow
+In contrary to being able to buy products, You can be a seller and do CRUD operations for products, here is a flow of operations for seller and buyer
+![seller_flow](./docks/seller_flow.png)
