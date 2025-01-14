@@ -131,6 +131,25 @@ functions:
           path: /place-order
           method: post
 
+  joinSellerProgram:
+    handler: app/handler.JoinSellerProgram
+    events:
+      - httpApi:
+          path: /join
+          method: post
+  getPaymentMethods:
+    handler: app/handler.GetPaymentMethods
+    events:
+      - httpApi:
+          path: /payment-methods
+          method: get
+  editPaymentMethod:
+    handler: app/handler.EditPaymentMethod
+    events:
+      - httpApi:
+          path: /payment-methods/{id}
+          method: put
+
 plugins:
   - serverless-offline
   - serverless-dotenv-plugin
