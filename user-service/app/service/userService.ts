@@ -39,7 +39,16 @@ export class UserService {
                 user_type: 'BUYER'
             })
 
-            return SuccessResponse(user);
+            const token = GenerateToken(user);
+            return SuccessResponse({ 
+                token,
+                email: user.email,
+                firstName: user.first_name,
+                lastName: user.last_name,
+                phone: user.phone,
+                userType: user.user_type,
+                _id: user.user_id,
+            });
         } catch(e) {
             return ErrorResponse(500, e);
         }
@@ -60,7 +69,15 @@ export class UserService {
                 throw new Error('credentails doesnt match');
             }
             const token = GenerateToken(foundUser);
-            return SuccessResponse({ token });
+            return SuccessResponse({ 
+                token,
+                email: foundUser.email,
+                firstName: foundUser.first_name,
+                lastName: foundUser.last_name,
+                phone: foundUser.phone,
+                userType: foundUser.user_type,
+                _id: foundUser.user_id,
+            });
         } catch(e) {
             return ErrorResponse(500, e);
         }
