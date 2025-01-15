@@ -10,7 +10,8 @@
     "test": "jest",
     "cdk": "cdk",
     "dev": "cdk synth && sam local start-api -t cdk.out/ProductServiceStack.template.json",
-    "deploy": "ckd deploy --verbose --trace"
+    "deploy": "ckd deploy --verbose --trace",
+    "deploy-destroy": "cdk destroy"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
