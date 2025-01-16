@@ -82,7 +82,7 @@ export class SellerRepository extends DBOperation {
         paymentType,
         user_id
     }: SellerProgramInput & { user_id: number }) {
-        const queryString = `INSER INTO payment_methods(
+        const queryString = `INSERT INTO payment_methods(
             bank_account,
             swift_code,
             payment_type,
@@ -120,12 +120,12 @@ export class SellerRepository extends DBOperation {
             SET
                 bank_account=$1,
                 swift_code=$2,
-                payment_type=$3,
+                payment_type=$3
             WHERE
                 id=$4
             AND
                 user_id=$5
-        `;
+            `;
         const values = [
             Number(bankAccountNumber),
             swiftCode,
