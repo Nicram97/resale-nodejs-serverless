@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 
 const s3Client = new S3Client();
 
-export const handler = async (
+export const imageUploader = async (
     event: APIGatewayEvent,
     context: Context,
 ): Promise<APIGatewayProxyResult> => {
