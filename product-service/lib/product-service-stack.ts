@@ -12,25 +12,17 @@ export class ProductServiceStack extends cdk.Stack {
 
     // spawn services which represent lambdas
     const { 
-      productService,
-      categoryService,
-      dealsService,
-      imageService,
-      queueService,
+      services
     } = new ServiceStack(this, 'ProductService', {
       bucket: bucket.bucketName
     });
 
     // assign permissions for bucket
-    bucket.grantReadWrite(imageService);
+    bucket.grantReadWrite(services.imageUploader);
 
     // spawn api gateway and pass lambda services inside of api gateway to "show them to the world through API"
     new ApiGatewayStack(this, 'ProductApiGateway', {
-      productService,
-      categoryService,
-      dealsService,
-      imageService,
-      queueService
+      services,
     });
   }
 }
