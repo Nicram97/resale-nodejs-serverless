@@ -14,9 +14,12 @@ Techstack:
 - MongoDb
 - Amazon S3
 - Stripe integration
+- Twilio
+- Sendgrid
+- AWS SES
 
 ### TLDR
-Each service has its package.json file which has command to run for dev, remember to set data for postgres and mongodb properly.
+Each service has its package.json file which has command to run for dev, remember to set data for postgres and mongodb properly. Also set env variables, some are inside code as a dev playground, some services have .env
 
 
 ### NOTES
@@ -188,3 +191,12 @@ Also pulling from queue (for SQS) will be used, both of those services and techn
 #### Seller flow
 In contrary to being able to buy products, You can be a seller and do CRUD operations for products, here is a flow of operations for seller and buyer
 ![seller_flow](./docks/seller_flow.png)
+
+### Possible improvements
+* introduce .env in each service
+* add sending email through notification service after placing order etc.
+* code cleanup
+* introduce proper loger
+* add transactions/products monitoring
+
+@ Code/Design based on internet tutorial used as a reference for training purpose! https://github.com/codergogoi/nodejs-sls-master-class.io
