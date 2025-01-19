@@ -40,7 +40,7 @@ export const getSellerProducts = middy(
         event: APIGatewayEvent,
         context: Context,
     ): Promise<APIGatewayProxyResult> => {
-        return productSerivce.getProducts();
+        return productSerivce.getSellerProducts(event);
     }
 ).use(jsonBodyParser());
 
