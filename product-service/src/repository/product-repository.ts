@@ -4,7 +4,7 @@ import { ProductDoc, products } from "../models";
 export class ProductRepository {
     constructor() {}
 
-    async createProduct({ name, description, price, category_id, image_url }: ProductInput): Promise<ProductDoc> {
+    async createProduct({ name, description, price, category_id, image_url, seller_id }: ProductInput): Promise<ProductDoc> {
         const result = await products.create({
             name,
             description,
@@ -12,12 +12,17 @@ export class ProductRepository {
             category_id,
             image_url,
             availability: true,
+            seller_id,
         });
         return result;
     }
 
     async getAllProducts(offset = 0, pages?: number) {
         return products.find().skip(offset).limit(pages ? pages : 500);
+    }
+
+    async getAllSellerProducts(seller_id: number, offset = 0, pages?: number) {
+        return products.find({ seller_id }).skip(offset).limit(pages ? pages : 500);
     }
 
     async getProductById(id: string): Promise<ProductDoc | null> {
