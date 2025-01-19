@@ -8,7 +8,7 @@ export const GenerateVerificationCode = () => {
 }
 
 export const SendVerificationCodeToSNS = async (code: number, toPhoneNumber: string) => {
-        // send data to SNS topic to create Order [Transaction MS] => email to user
+        // send data to SNS topic to send otp to client phone
         const params = {
             Message: JSON.stringify({
                 phone: toPhoneNumber,
