@@ -1,8 +1,4 @@
-import twilio from 'twilio';
-
-const accountSid = 'ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-const authToken = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-const client = twilio(accountSid, authToken);
+import aws from 'aws-sdk';
 
 export const GenerateVerificationCode = () => {
     const code = Math.floor(10000 + Math.random() * 900000);
@@ -11,12 +7,22 @@ export const GenerateVerificationCode = () => {
     return { code, expiry };
 }
 
-export const SendVerificationCode = async (code: number, toPhoneNumber: string) => {
-    const response = await client.messages.create({
-        body: `Your verification code is ${code} it will expire in 30 minutes`,
-        from: '+1234567890',
-        to: toPhoneNumber.trim(),
-    });
-
-    return response;
+export const SendVerificationCodeToSNS = async (code: number, toPhoneNumber: string) => {
+        // send data to SNS topic to create Order [Transaction MS] => email to user
+        const params = {
+            Message: JSON.stringify({
+                phone: toPhoneNumber,
+                code,
+            }),
+            TopicArn: process.env.NOTIFY_TOPIC,
+            MessageAttributes: {
+                actionType: {
+                    DataType: "String",
+                    StringValue: "customer_otp"
+                }
+            }
+        }
+        const sns = new aws.SNS();
+        const response = await sns.publish(params).promise();
+        console.log(response)
 };
