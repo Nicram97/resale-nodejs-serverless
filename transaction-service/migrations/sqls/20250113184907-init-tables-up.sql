@@ -6,7 +6,7 @@ CREATE TABLE "transactions" (
     "created" integer,
     "currency" varchar,
     "customer" varchar,
-    "payment_id" varchar,
+    "payment_id" varchar UNIQUE NOT NULL,
     "payment_method" varchar,
     "payment_method_types" varchar,
     "status" varchar,
