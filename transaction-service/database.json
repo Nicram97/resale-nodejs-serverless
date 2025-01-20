@@ -2,7 +2,7 @@
     "dev": {
         "driver": "pg",
         "user": "transaction_service",
-        "password": "***REMOVED***",
+        "password": "",
         "host": "",
         "database": "transaction_service"
     }

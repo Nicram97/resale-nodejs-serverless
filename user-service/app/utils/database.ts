@@ -13,7 +13,7 @@ export const DBCLient = () => {
         host: '', 
         user: 'user_service',
         database: 'user_service',
-        password: '***REMOVED***',
+        password: '',
         port: 5432
     });
 }

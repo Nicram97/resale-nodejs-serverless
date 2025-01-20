@@ -5,7 +5,7 @@ export const DBClient = () => {
         host: '',
         user: 'transaction_service',
         database: 'transaction_service',
-        password: '***REMOVED***',
+        password: '',
         port: 5432,
     });
 
