@@ -4,10 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const ***REMOVED*** = ReactDOM.createRoot(
-  document.getElementById('***REMOVED***') as HTMLElement
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
 );
-***REMOVED***.render(
+root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>

@@ -10,7 +10,7 @@ interface ApiGatewayStackProps {
     getTransaction: IFunction,
 }
 
-// interface representing endpoints resource it accepts ***REMOVED*** name + methods and can accept child paths as additional resources
+// interface representing endpoints resource it accepts root name + methods and can accept child paths as additional resources
 interface ResourceType {
     name: string;
     methods: string[];
@@ -53,11 +53,11 @@ export class ApiGatewayStack extends Construct {
         { name, methods, child }: ResourceType
     ) {
         const lambdaFunction = new LambdaIntegration(handler);
-        const ***REMOVED***Resource = resource.***REMOVED***.addResource(name);
+        const rootResource = resource.root.addResource(name);
         methods.map((item) => {
-            ***REMOVED***Resource.addMethod(item, lambdaFunction);
+            rootResource.addMethod(item, lambdaFunction);
         });
-        return ***REMOVED***Resource;
+        return rootResource;
     }
 
     addChildEndpoint(

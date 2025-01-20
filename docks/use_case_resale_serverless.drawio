@@ -1,7 +1,7 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.8.4">
   <diagram name="Page-1" id="VsHx6AKx9n6huoKGBFxc">
     <mxGraphModel dx="1050" dy="522" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
-      <***REMOVED***>
+      <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="JI2JVxoufU1eyjLKz7Zp-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JI2JVxoufU1eyjLKz7Zp-1" target="JI2JVxoufU1eyjLKz7Zp-4">
@@ -25,7 +25,7 @@
         <mxCell id="JI2JVxoufU1eyjLKz7Zp-9" value="Payment Gateway" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
           <mxGeometry x="320" y="250" width="140" height="60" as="geometry" />
         </mxCell>
-      </***REMOVED***>
+      </root>
     </mxGraphModel>
   </diagram>
 </mxfile>

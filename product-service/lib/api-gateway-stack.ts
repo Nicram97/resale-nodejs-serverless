@@ -14,7 +14,7 @@ interface Method {
     handler: IFunction;
 }
 
-// interface representing endpoints resource it accepts ***REMOVED*** name + methods and can accept child paths as additional resources
+// interface representing endpoints resource it accepts root name + methods and can accept child paths as additional resources
 interface ResourceType {
     name: string;
     methods: Method[];
@@ -141,21 +141,21 @@ export class ApiGatewayStack extends Construct {
     }
 
     createEndpoints( resource: RestApi, { name, methods }: ResourceType) {
-        // create ***REMOVED*** path and resource
-        const ***REMOVED***Resource = resource.***REMOVED***.addResource(name);
+        // create root path and resource
+        const rootResource = resource.root.addResource(name);
         // add methods to path
         methods.map((item) => {
-            // create ***REMOVED*** level lambda handler
+            // create root level lambda handler
             const lambdaFunction = new LambdaIntegration(item.handler);
-            ***REMOVED***Resource.addMethod(item.methodType, lambdaFunction);
+            rootResource.addMethod(item.methodType, lambdaFunction);
         });
 
-        return ***REMOVED***Resource;
+        return rootResource;
     }
 
-    addChildEndpoint( ***REMOVED***Resource: aws_apigateway.Resource, { name, methods }: ResourceType) {
+    addChildEndpoint( rootResource: aws_apigateway.Resource, { name, methods }: ResourceType) {
         // create child path and resource
-        const childResource = ***REMOVED***Resource.addResource(name);
+        const childResource = rootResource.addResource(name);
         // add methods to path
         methods.map((item) => {
             // create sub-level lambda handler
