@@ -1,9 +1,9 @@
 {
     "dev": {
         "driver": "pg",
-        "user": "user_service",
-        "password": "***REMOVED***",
+        "user": "",
+        "password": "",
         "host": "",
-        "database": "user_service"
+        "database": ""
     }
 }

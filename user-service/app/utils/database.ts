@@ -11,9 +11,9 @@ export const DBCLient = () => {
     // });
     return new Client({
         host: '', 
-        user: 'user_service',
-        database: 'user_service',
-        password: '***REMOVED***',
+        user: '',
+        database: '',
+        password: '',
         port: 5432
     });
 }
